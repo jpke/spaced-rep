@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Landing from './Landing';
+import Quiz from './Quiz.js'
+import Cards from './Cards.js'
 import './index.css';
 import { Provider } from 'react-redux'
 import store from './configureStore'
@@ -12,6 +14,8 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Landing} />
+        <Route path="quiz" component={Quiz} />
+        <Route path="cards" component={Cards} />
       </Route>
     </Router>
   </Provider>,
