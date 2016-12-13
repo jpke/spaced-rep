@@ -186,18 +186,17 @@ export const Reducer = function(state=initialState, action={}) {
   switch(action.type) {
     case CHECK_RESPONSE:
       let questions;
-      let nextQuestion = state.questions[1];
       let numCorrect = state.numCorrect;
-      let multiplier = 1;
+      let multiplier = 2;
       let oldQuestion = {...state.questions[0]};
       if (action.isCorrect) {
-        multiplier = 2;
+        multiplier = 3;
         numCorrect++;
       }
       oldQuestion.mValue = oldQuestion.mValue * multiplier;
-        questions = state.questions.slice(1, oldQuestion.mValue +  1);
-        questions = questions.concat(oldQuestion, state.questions
-          .slice(oldQuestion.mValue + 1, state.questions.length));
+      questions = state.questions.slice(1, oldQuestion.mValue +  1);
+      questions = questions.concat(oldQuestion, state.questions
+        .slice(oldQuestion.mValue + 1, state.questions.length));
 
       return { ...state, questions: questions, 
               numCorrect: numCorrect }
