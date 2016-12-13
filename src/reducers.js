@@ -2,7 +2,7 @@ import {
   CHECK_RESPONSE
 } from './actions';
 
-const initialState = {
+export const initialState = {
   questions: [
     {
       question: "Wermo",
@@ -181,7 +181,7 @@ const initialState = {
   numCorrect: 0
 }
 
-const Reducer = function(state=initialState, action={}) {
+export const Reducer = function(state=initialState, action={}) {
 
   switch(action.type) {
     case CHECK_RESPONSE:
@@ -205,6 +205,3 @@ const Reducer = function(state=initialState, action={}) {
       return state;
   }
 }
-
-  
-export default Reducer
