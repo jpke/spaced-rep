@@ -7,9 +7,11 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var Strategy = require('passport-http-bearer').Strategy;
 var bodyParser = require('body-parser');
+var cors = require('cors');
 var http = require('http');
 
 var app = express();
+app.use(cors());
 var jsonParser = bodyParser.json();
 
 passport.use(new GoogleStrategy({
