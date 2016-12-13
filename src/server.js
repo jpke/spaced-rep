@@ -9,6 +9,7 @@ var Strategy = require('passport-http-bearer').Strategy;
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var http = require('http');
+var User = require('./user');
 
 var app = express();
 app.use(cors());
@@ -20,11 +21,31 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3090/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
+    User.findOne({ googleId: profile.id }, function (err, user) {
+		if (!err) {
+			if (!user) {
+				user = new User()
+				user.googleId = profile.id
+			}
+			user.save(function(err) {
+				if (!err) {
+					console.log('user created')
+				}
+			}).then(function() {
+				return cb(err, user);
+			})
+		}
     });
   }
 ));
+
+passport.serializeUser(function(user, done) {
+	done(null, user)
+})
+
+passport.deserializeUser(function(user, done) {
+	done(null, user);
+})
 
 app.use(passport.initialize());
 
@@ -43,10 +64,14 @@ app.get('/', function(req, res) {
 	res.send('hello');
 })
 
+var databaseURI = 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
+mongoose.connect(databaseURI).then(function() {
+	var port = process.env.port || 3090;
+	var server = http.createServer(app);
+	server.listen(port);
+	console.log('Server listening on ', port);
+}).catch(function(error) {
+	console.log('Server error: ', error);
+})
 
 
-
-var port = process.env.port || 3090;
-var server = http.createServer(app);
-server.listen(port);
-console.log('Server listening on ', port);
