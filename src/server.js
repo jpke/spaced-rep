@@ -236,13 +236,24 @@ app.use(passport.initialize());
 //   });
 
 
-app.get('/questions', passport.authenticate('bearer', { session: false }), function(req, res) {
-	Questions.find({}, function(err, data) {
+app.get('/question', passport.authenticate('bearer', { session: false }), function(req, res) {
+	console.log('REQ HEADER AUTH', req.headers.authorization)
+	var accessToken = req.headers.authorization.split(' ')[1]
+	console.log('accessToken:::', accessToken)
+	User.find({token: accessToken}, {questions: 1}, function(err, data) {
 		if (err) {
 			console.error(err)
 			return res.status(500).json('Internal Server Error')
 		}
-		res.status(200).json(data)
+		console.log('SERVER DATA 0', data[0])
+		Questions.find({_id: data[0].questions[0]._id}, function(err, newQuestion) {
+			if (err) {
+				console.error(err)
+				return res.status(500).json('Internal Server Error')
+			}
+			console.log('SERVER NEW QUESTION:', newQuestion)
+			return res.status(200).json(newQuestion)
+		})
 	})
 })
 
@@ -269,22 +280,26 @@ app.get('/auth/google/callback', function(req, res) {
 	oauth2Client.getToken(req.query.code, function (err, tokens) {
 	  // Now tokens contains an access_token and an optional refresh_token. Save them.
 	  	if (!err) {
-		  	console.log('TOKENS:::', tokens)
 		    //oauth2Client.setCredentials(tokens);
 		    User.findOne({ token: tokens.access_token }, function (err, user) {
 				if (!err) {
 					if (!user) {
 						user = new User()
 						user.token = tokens.access_token
-					}
-					user.save(function(err) {
-						if (!err) {
-							console.log('user created')
-						}
-					}).then(function() {
+						Questions.find({}, {_id: 1, mValue: 1}, function(err, data) {
+							console.log('DATA:::', data)
+							user.questions = data
+							user.save(function(err) {
+								if (!err) {
+								console.log('user created')
+								}
+							}).then(function() {
+							res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
+							})	
+						})
+					} else {
 						res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
-					})
-					res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
+					}
 				}
 		    });
   		} else {

@@ -41,18 +41,20 @@ export const populateQuestions = (data) => {
 export const FETCH_QUESTIONS = 'FETCH_QUESTIONS'
 export const fetchQuestions = () => {
 	return (dispatch) => {
-		const url = 'http://localhost:3090/questions'
+		const url = 'http://localhost:3090/question'
 		return fetch(url, {headers: {'Accept': 'application/json', 
 			'Authorization': `Bearer ${cookie.load('accessToken')}`}}
 		).then((res) => {
 			if (res.status < 200 || res.status >= 300) {
 				const error = new Error(res.statusText);
 				error.res = res;
+				console.error(error)
 				throw error;
 			}
 			console.log('RES:::', res)
 			return res.json()
 		}).then((data) => {
+			console.log('ACTIONS DATA:', data)
 			return dispatch(populateQuestions(data))
 		})
 	}
