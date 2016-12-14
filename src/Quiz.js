@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import * as actions from './actions';
 
 class Quiz extends Component {
+  
   handleFormSubmit(e) {
     e.preventDefault();
-    console.log(e.target.englishInput.value);
     let isCorrect = (e.target.englishInput.value === this.props.question.answer) ? true : false;
     console.log('IS CORRECT: ', isCorrect)
     this.props.checkResponse(isCorrect)
+    this.props.sendUserInput(this.props.question._id, isCorrect)
   }
+
   renderEwok(numCorrect) {
     let temp = [];
     for (let i = 0; i < this.props.numCorrect; i++) {
-        console.log('RENDER EWOK?')
         temp.push(<img className='thugLife' key={i} src="http://overmental.com/wp-content/uploads/2015/06/Wicket-thug-life.jpg" />)
     }
-    console.log('TEMP:::', temp)
     return (
       <div>{temp}</div>
     )
@@ -28,12 +28,12 @@ class Quiz extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchQuestions()
+    this.props.fetchQuestion()
   }
 
   checkQuestion() {
     if (this.props.question === undefined) {
-      return "loading"
+      return "loading..."
     } else  {
       return this.props.question.question
     }
