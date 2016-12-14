@@ -7,6 +7,10 @@ var userSchema = new mongoose.Schema({
 	token: {
 		type: String,
 		required: true
+	},
+	questions: {
+		type: Array,
+		required: true
 	}
 })
 
