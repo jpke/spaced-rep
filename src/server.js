@@ -221,23 +221,7 @@ passport.use(new Strategy(
 
 app.use(passport.initialize());
 
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope: ['profile'] }));
-
-// app.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   function(req, res) {
-//   	// var url = 'https://www.googleapis.com/oauth2/v4/token?code=' + req.queryStringParameters.code +;
-//   	// this.get('')
-//   	console.log('GET RESPONSE:::', req.query)
-//     // Successful authentication, redirect home.
-//     //res.redirect('/');
-//     res.status(200).json('hello world')
-//   });
-
-
 app.get('/question', passport.authenticate('bearer', { session: false }), function(req, res) {
-	console.log('REQ HEADER AUTH', req.headers.authorization)
 	var accessToken = req.headers.authorization.split(' ')[1]
 	console.log('accessToken:::', accessToken)
 	User.find({token: accessToken}, {questions: 1}, function(err, data) {
@@ -251,13 +235,22 @@ app.get('/question', passport.authenticate('bearer', { session: false }), functi
 				console.error(err)
 				return res.status(500).json('Internal Server Error')
 			}
-			console.log('SERVER NEW QUESTION:', newQuestion)
 			return res.status(200).json(newQuestion)
 		})
 	})
 })
 
-
+app.post('/question', jsonParser, passport.authenticate('bearer', { session: false }), function(req, res) {
+	var accessToken = req.headers.authorization.split(' ')[1]
+	console.log('server req body', req.body)
+	User.find({token: accessToken}, {questions: 1}, function(err, data) {
+		if (err) {
+			console.error(err)
+			return res.status(500).json('Internal Server Error')
+		}
+	
+	})
+})
 
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
