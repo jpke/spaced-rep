@@ -8,13 +8,15 @@ import './index.css';
 import { Provider } from 'react-redux'
 import store from './configureStore'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import RequireAuth from './requireAuth'
+
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Landing} />
-        <Route path="quiz" component={Quiz} />
+        <Route path="quiz" component={RequireAuth(Quiz)} />
         <Route path="cards" component={Cards} />
       </Route>
     </Router>

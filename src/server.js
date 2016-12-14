@@ -108,8 +108,24 @@ app.get('/auth/google/callback', function(req, res) {
 	  	if (!err) {
 		  	console.log('TOKENS:::', tokens)
 		    //oauth2Client.setCredentials(tokens);
+		    User.findOne({ token: tokens.access_token }, function (err, user) {
+				if (!err) {
+					if (!user) {
+						user = new User()
+						user.token = tokens.access_token
+					}
+					user.save(function(err) {
+						if (!err) {
+							console.log('user created')
+						}
+					}).then(function() {
+						res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
+					})
+				}
+		    });
+  		} else {
+  			res.status(500).json({'error': err});
   		}
-  		res.cookie("hello", "world").redirect("/");
 	});
 })
 

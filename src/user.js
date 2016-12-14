@@ -4,7 +4,7 @@ var userSchema = new mongoose.Schema({
 	name: {
 		type: String
 	},
-	googleId: {
+	token: {
 		type: String,
 		required: true
 	}
