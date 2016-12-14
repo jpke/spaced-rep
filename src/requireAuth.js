@@ -13,7 +13,7 @@ export default function(ComposedComponent) {
 			}
 		}
 
-		compenentWillUpdate() {
+		componentWillUpdate() {
 			if (!this.props.isLoggedIn) {
 				this.context.router.push('/')
 			}

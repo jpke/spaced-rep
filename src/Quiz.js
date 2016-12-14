@@ -6,7 +6,7 @@ class Quiz extends Component {
   handleFormSubmit(e) {
     e.preventDefault();
     console.log(e.target.englishInput.value);
-    let isCorrect = (e.target.englishInput.value === this.props.questions.answer) ? true : false;
+    let isCorrect = (e.target.englishInput.value === this.props.question.answer) ? true : false;
     console.log('IS CORRECT: ', isCorrect)
     this.props.checkResponse(isCorrect)
   }
@@ -27,12 +27,24 @@ class Quiz extends Component {
     this.props.router.replace('/')
   }
 
+  componentWillMount() {
+    this.props.fetchQuestions()
+  }
+
+  checkQuestion() {
+    if (this.props.question === undefined) {
+      return "loading"
+    } else  {
+      return this.props.question.question
+    }
+  }
+
   render() {
     return <div>
             <button onClick={this.handleClick.bind(this)}>Log Out</button>
             <h1>Ewokese Quiz</h1>
             <div className="question-card"> 
-                <h3>Ewok:</h3><p>{this.props.questions.question}</p>
+                <h3>Ewok:</h3><p>{this.checkQuestion()}</p>
                 <h3>English:</h3>
                 <form onSubmit={this.handleFormSubmit.bind(this)}>
                 <input type="text" name="englishInput" placeholder="english meaning" />
@@ -46,7 +58,7 @@ class Quiz extends Component {
 function mapStateToProps(state) {
   console.log('STATE::', state)
   return {
-    questions: state.questions[0],
+    question: state.questions[0],
     numCorrect: state.numCorrect
   }
 }
