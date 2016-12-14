@@ -21,8 +21,15 @@ class Quiz extends Component {
       <div>{temp}</div>
     )
   }
+
+  handleClick() {
+    this.props.logOut()
+    this.props.router.replace('/')
+  }
+
   render() {
     return <div>
+            <button onClick={this.handleClick.bind(this)}>Log Out</button>
             <h1>Ewokese Quiz</h1>
             <div className="question-card"> 
                 <h3>Ewok:</h3><p>{this.props.questions.question}</p>
