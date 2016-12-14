@@ -10,36 +10,195 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var http = require('http');
 var User = require('./user');
+var Questions = require('./questions');
 
 var app = express();
 app.use(cors());
 app.use(express.static( '../build'));
 var jsonParser = bodyParser.json();
 
-// passport.use(new GoogleStrategy({
-//     clientID: CLIENT_ID,
-//     clientSecret: CLIENT_SECRET,
-//     callbackURL: "http://localhost:3090/auth/google/callback"
-//   },
-//   function(accessToken, refreshToken, profile, cb) {
-//   	console.log('accessToken & refreshToken:::', accessToken, refreshToken)
-//     User.findOne({ googleId: profile.id }, function (err, user) {
-// 		if (!err) {
-// 			if (!user) {
-// 				user = new User()
-// 				user.googleId = profile.id
-// 			}
-// 			user.save(function(err) {
-// 				if (!err) {
-// 					console.log('user created')
-// 				}
-// 			}).then(function() {
-// 				return cb(err, user);
-// 			})
-// 		}
-//     });
-//   }
-// ));
+// var questions = [
+//     {
+//       question: "Wermo",
+//       answer: "A stupid person",
+//       mValue: 1
+//     },
+//     {
+//       question: "Ee chee wa maa!",
+//       answer: "Gee whiz",
+//       mValue: 1
+//     },
+//     {
+//       question: "Kna Naa",
+//       answer: "Spirit tree",
+//       mValue: 1
+//     },
+//     {
+//       question: "Jeerota",
+//       answer: "Friend",
+//       mValue: 1
+//     },
+//     {
+//       question: "Kreeth",
+//       answer: "Cave",
+//       mValue: 1
+//     },
+//     {
+//       question: "Mookiee",
+//       answer: "Female baby Ewok",
+//       mValue: 1
+//     },
+//     {
+//       question: "Nuv",
+//       answer: "Love",
+//       mValue: 1
+//     },
+//     {
+//       question: "Ooba",
+//       answer: "Sweet",
+//       mValue: 1
+//     },
+//     {
+//       question: "Powa",
+//       answer: "Power",
+//       mValue: 1
+//     },
+//     {
+//       question: "Roda",
+//       answer: "To eat",
+//       mValue: 1
+//     },
+//     {
+//       question: "Sheeu",
+//       answer: "Name",
+//       mValue: 1
+//     },
+//     {
+//       question: "Shetai",
+//       answer: "Warrior",
+//       mValue: 1
+//     },
+//     {
+//       question: "Sku",
+//       answer: "Hello",
+//       mValue: 1
+//     },
+//     {
+//       question: "Sleesh",
+//       answer: "Berry",
+//       mValue: 1
+//     },
+//     {
+//       question: "Sunee",
+//       answer: "Sun",
+//       mValue: 1
+//     },
+//     {
+//       question: "Teeha",
+//       answer: "Thank you",
+//       mValue: 1
+//     },
+//     {
+//       question: "Teeket",
+//       answer: "Heart",
+//       mValue: 1
+//     },
+//     {
+//       question: "Sut",
+//       answer: "Soon",
+//       mValue: 1
+//     },
+//     {
+//       question: "Thek",
+//       answer: "Here",
+//       mValue: 1
+//     },
+//     {
+//       question: "Thees",
+//       answer: "Good",
+//       mValue: 1
+//     },
+//     {
+//       question: "T'hesh",
+//       answer: "Quiet",
+//       mValue: 1
+//     },
+//     {
+//       question: "Thuk",
+//       answer: "Rock",
+//       mValue: 1
+//     },
+//     {
+//       question: "Treek",
+//       answer: "Go",
+//       mValue: 1
+//     },
+//     {
+//       question: "Treekthin",
+//       answer: "Hourney",
+//       mValue: 1
+//     },
+//     {
+//       question: "Tu",
+//       answer: "The",
+//       mValue: 1
+//     },
+//     {
+//       question: "Weewa",
+//       answer: "House",
+//       mValue: 1
+//     },
+//     {
+//       question: "Yeha",
+//       answer: "Goodbye",
+//       mValue: 1
+//     },
+//     {
+//       question: "Yehan",
+//       answer: "Peace",
+//       mValue: 1
+//     },
+//     {
+//       question: "Yesh",
+//       answer: "Correct",
+//       mValue: 1
+//     },
+//     {
+//       question: "Drin",
+//       answer: "Sick",
+//       mValue: 1
+//     },
+//     {
+//       question: "Churi",
+//       answer: "Mountain",
+//       mValue: 1
+//     },
+//     {
+//       question: "Dutak",
+//       answer: "Arrow",
+//       mValue: 1
+//     },
+//     {
+//       question: "Eleeo",
+//       answer: "Never",
+//       mValue: 1
+//     },
+//     {
+//       question: "Ehda",
+//       answer: "Evil",
+//       mValue: 1
+//     }
+//   ]
+
+//   questions.forEach(function(item) {
+//   	Questions.create({
+//   		question: item.question,
+//   		answer: item.answer,
+//   		mValue: item.mValue
+//   	}, function() {
+//   		return
+//   	})
+//   })
 
 passport.serializeUser(function(user, done) {
 	done(null, user)
@@ -77,10 +236,14 @@ app.use(passport.initialize());
 //   });
 
 
-
-
-app.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-	res.send('hello');
+app.get('/questions', passport.authenticate('bearer', { session: false }), function(req, res) {
+	Questions.find({}, function(err, data) {
+		if (err) {
+			console.error(err)
+			return res.status(500).json('Internal Server Error')
+		}
+		res.status(200).json(data)
+	})
 })
 
 
@@ -121,6 +284,7 @@ app.get('/auth/google/callback', function(req, res) {
 					}).then(function() {
 						res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
 					})
+					res.cookie('accessToken', tokens.access_token).redirect("http://localhost:3000");
 				}
 		    });
   		} else {
@@ -133,6 +297,7 @@ app.get('/auth/google/callback', function(req, res) {
 
 var databaseURI = 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
 mongoose.connect(databaseURI).then(function() {
+	//User.remove({});
 	var port = process.env.port || 3090;
 	var server = http.createServer(app);
 	server.listen(port);
