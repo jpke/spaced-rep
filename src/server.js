@@ -1,4 +1,3 @@
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
 require("dotenv").config();
 var CLIENT_ID  = process.env.CLIENT_ID;
 var CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -12,6 +11,7 @@ var http = require('http');
 var User = require('./user');
 var Questions = require('./questions');
 var path = require('path');
+var google = require('googleapis');
 
 var app = express();
 app.use(cors());
@@ -107,7 +107,6 @@ app.put('/question', jsonParser, passport.authenticate('bearer', { session: fals
 	})
 })
 
-var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 
 var oauth2Client = new OAuth2(
