@@ -17,7 +17,8 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <IndexRoute component={Landing} />
         <Route path="quiz" component={RequireAuth(Quiz)} />
-        <Route path="print-cards" component={CardPage} />
+        <Route path="print-cards" component={CardPage} printable='true' />
+        <Route path="study-cards" component={CardPage} printable='false' />
       </Route>
     </Router>
   </Provider>,

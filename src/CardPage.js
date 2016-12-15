@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from './actions';
 import PrintCard from './PrintCard'
+import StudyCard from './StudyCard'
 
 var questions = [
     {
@@ -181,15 +182,15 @@ export default class CardPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {questions}
+		this.Card = this.props.route.printable == "true" ? PrintCard : StudyCard;
 	}
 
 	createCards() {
 		const cards = this.state.questions.map((card, index) => {
 			return 	<div key={index}>
-						<PrintCard card={card} />
+						<this.Card card={card} />
 					</div>
 		})
-		console.log('cards:::', cards)
 		return cards
 	}
 

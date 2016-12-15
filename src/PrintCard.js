@@ -4,12 +4,9 @@ import * as actions from './actions';
 
 export default function(props) {
 
-	const card = props.card ? props.card: {}
-
-
 	return  <div className='word-card'>
-				<p className='light-side'>{card.question}</p>
-				<p className='dark-side'>{card.answer}</p>
+				<p className='light-side'>{props.card.question}</p>
+				<p className='dark-side'>{props.card.answer}</p>
 			</div>
 	
 
