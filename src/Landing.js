@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import * as actions from './actions.js';
 import { connect } from 'react-redux';
+import cookie from 'react-cookie'
 
 class Landing extends Component {
-	handleOnClick() {
-		this.props.loggedIn()
-		console.log(this.props.isLoggedIn)
-		// browserHistory.push('/auth/google/')
-
-	}
 
 	componentWillMount() {
 		this.props.saveCookie()
+		if(cookie.load('accessToken')) this.props.loggedIn()
 	}
 	
 	render() {
