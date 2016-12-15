@@ -7,7 +7,7 @@ class Landing extends Component {
 	handleOnClick() {
 		this.props.loggedIn()
 		console.log(this.props.isLoggedIn)
-		window.location.href='auth/google/'
+		window.location.href='/auth/google/'
 	}
 
 	componentWillMount() {
