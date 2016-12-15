@@ -160,7 +160,7 @@ app.get('/auth/google/callback', function(req, res) {
 //    res.sendFile(path.join(__dirname, './build', 'index.html'));
 //  });
 
-var databaseURI = process.env.DATABASE_URI || 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
+var databaseURI = process.env.DATABASE_URI || 'mongodb://localhost/databasename';
 mongoose.connect(databaseURI).then(function() {
 	//User.remove({});
 	var port = process.env.port || 3090;
