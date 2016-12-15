@@ -38,7 +38,7 @@ passport.use(new Strategy(
 
 app.use(passport.initialize());
 
-app.get('/', function (req, res) {
+app.get('/*', function (req, res) {
    res.sendFile(path.join(__dirname, './build', 'index.html'));
  });
 
@@ -117,7 +117,7 @@ var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  'http://localhost:3090/auth/google/callback'
+  '/auth/google/callback'
 );
 
 app.get('/auth/google', function(req, res) {

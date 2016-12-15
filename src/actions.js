@@ -41,7 +41,7 @@ export const populateQuestions = (data) => {
 export const FETCH_QUESTION = 'FETCH_QUESTION'
 export const fetchQuestion = () => {
 	return (dispatch) => {
-		const url = 'http://localhost:3090/question'
+		const url = '/question'
 		return fetch(url, {headers: {'Accept': 'application/json', 
 			'Authorization': `Bearer ${cookie.load('accessToken')}`}}
 		).then((res) => {
@@ -62,7 +62,7 @@ export const SEND_USER_INPUT = 'SEND_USER_INPUT'
 export const sendUserInput = (_id, isCorrect) => {
 	console.log('actions json', JSON.stringify({_id, isCorrect}))
 	return (dispatch) => {
-		const url = 'http://localhost:3090/question'
+		const url = '/question'
 		return fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify({_id, isCorrect}),
