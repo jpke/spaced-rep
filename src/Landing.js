@@ -7,7 +7,7 @@ class Landing extends Component {
 	handleOnClick() {
 		this.props.loggedIn()
 		console.log(this.props.isLoggedIn)
-		//window.location.href='http://localhost:3090/auth/google/'
+		window.location.href='http://localhost:3090/auth/google/'
 	}
 
 	componentWillMount() {
@@ -15,17 +15,25 @@ class Landing extends Component {
 	}
 	
 	render() {
-    return <div>
-				<h1>Learn Ewok!!</h1>
-				<h3>Login through Google</h3>
-				<div>Login Component Here</div>
-				{
-					this.props.isLoggedIn ? <Link to="/quiz">Go To Quiz</Link> : 
-					<button onClick={this.handleOnClick.bind(this)}>Authenticate User</button> 
-       			}
-       			{
-					this.props.isLoggedIn ? <Link to="/cards">Go To Study Page</Link> : "" 
-       			}
+    return <div className='landing'>
+				<h1>Learn Ewokese</h1>
+				<img className='ewok-friend' src='https://s.yimg.com/ny/api/res/1.2/8.rPRiBdkjRF2AlaQP_.0w--/YXBwaWQ9aGlnaGxhbmRlcjtzbT0xO3c9ODAwO2lsPXBsYW5l/http://36.media.tumblr.com/e19520d819ed6bf57dfe8a170858fb6c/tumblr_inline_nzeqzxNTTk1t0ijhl_1280.jpg' />
+				<h2>A long time ago in a galaxy far, far away... </h2>
+	       		<h3>Ewoks existed. Learn to speak Ewokese!</h3>
+				<div>
+					{
+						this.props.isLoggedIn ? <Link to="/quiz">Go To Quiz</Link> : 
+						<button onClick={this.handleOnClick.bind(this)}>Login through Google</button> 
+	       			}
+				</div>
+				<div>
+	       			{
+						this.props.isLoggedIn ? <Link to="/study-cards">Go To Study Page</Link> : "" 
+	       			}
+	       			{
+						this.props.isLoggedIn ? <Link to="/print-cards">Print Flash Cards</Link> : "" 
+	       			}
+	       		</div>
            </div>
   }
 }

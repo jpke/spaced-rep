@@ -24,10 +24,12 @@ export default class CardPage extends Component {
 
 	render() {
 
-		return  <div className='word-card'>
-					<p className='study-card' onClick={this.onClickWord.bind(this)}>
-						{this.props.card [this.state.side]}
-					</p>
+		return  <div>
+					<div className='study-card'>
+						<p onClick={this.onClickWord.bind(this)}>
+							{this.props.card [this.state.side]}
+						</p>
+					</div>
 				</div>
 	
 	}

@@ -183,6 +183,7 @@ export default class CardPage extends Component {
 		super(props)
 		this.state = {questions}
 		this.Card = this.props.route.printable == "true" ? PrintCard : StudyCard;
+
 	}
 
 	createCards() {
@@ -197,6 +198,8 @@ export default class CardPage extends Component {
 	render() {
 		//console.log('STATE:::', this.state.questions)
 		return  <div className='card-page'>
+					{this.props.route.printable == 'true' ? 
+						<h1>Printable Flash Cards</h1> : <h1>Study Ewokese</h1>}
 					{this.createCards()}
 				</div>
 	}

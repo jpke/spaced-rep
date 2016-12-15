@@ -11,6 +11,7 @@ import cookie from 'react-cookie'
 export const initialState = {
   questions: [],
   numCorrect: 0,
+  numIncorrect: 0,
   isLoggedIn: (cookie.load('accessToken') != null)
 }
 
@@ -21,11 +22,14 @@ console.log('cookie::::', cookie.load('accessToken'))
     case CHECK_RESPONSE:
       let questions;
       let numCorrect = state.numCorrect;
+      let numIncorrect = state.numIncorrect;
       let multiplier = 2;
       let oldQuestion = {...state.questions[0]};
       if (action.isCorrect) {
         multiplier = 3;
         numCorrect++;
+      } else {
+        numIncorrect++;
       }
       oldQuestion.mValue = oldQuestion.mValue * multiplier;
       questions = state.questions.slice(1, oldQuestion.mValue +  1);
@@ -33,7 +37,7 @@ console.log('cookie::::', cookie.load('accessToken'))
         .slice(oldQuestion.mValue + 1, state.questions.length));
 
       return { ...state, questions: questions, 
-              numCorrect: numCorrect }
+              numCorrect: numCorrect, numIncorrect: numIncorrect }
 
     case LOGGED_IN:
       return {...state, isLoggedIn: true}
