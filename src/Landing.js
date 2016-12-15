@@ -7,7 +7,8 @@ class Landing extends Component {
 	handleOnClick() {
 		this.props.loggedIn()
 		console.log(this.props.isLoggedIn)
-		browserHistory.push('/auth/google/')
+		// browserHistory.push('/auth/google/')
+
 	}
 
 	componentWillMount() {
@@ -21,7 +22,7 @@ class Landing extends Component {
 				<div>Login Component Here</div>
 				{
 					this.props.isLoggedIn ? <Link to="/quiz">Go To Quiz</Link> : 
-					<button onClick={this.handleOnClick.bind(this)}>Authenticate User</button> 
+					<a href='/auth/google/'>Log In</a>
        			}
            </div>
   }
