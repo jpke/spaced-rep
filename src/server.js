@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({silent: true});;
 var CLIENT_ID  = process.env.CLIENT_ID;
 var CLIENT_SECRET = process.env.CLIENT_SECRET;
 var express = require('express');
