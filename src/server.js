@@ -156,9 +156,9 @@ app.get('/auth/google/callback', function(req, res) {
 	});
 })
 
-app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, './build', 'index.html'));
- });
+// app.get('/*', function (req, res) {
+//    res.sendFile(path.join(__dirname, './build', 'index.html'));
+//  });
 
 var databaseURI = process.env.DATABASE_URI || 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
 mongoose.connect(databaseURI).then(function() {
