@@ -211,7 +211,6 @@ passport.deserializeUser(function(user, done) {
 
 passport.use(new Strategy(
   function(token, done) {
-  	console.log('TOKEN:::', token)
     User.findOne({ token: token }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
@@ -228,13 +227,11 @@ app.get('/*', function (req, res) {
 
 app.get('/question', passport.authenticate('bearer', { session: false }), function(req, res) {
 	var accessToken = req.headers.authorization.split(' ')[1]
-	console.log('accessToken:::', accessToken)
 	User.find({token: accessToken}, {questions: 1}, function(err, data) {
 		if (err) {
 			console.error(err)
 			return res.status(500).json('Internal Server Error')
 		}
-		console.log('SERVER DATA 0', data[0])
 		Questions.find({_id: data[0].questions[0]._id}, function(err, newQuestion) {
 			if (err) {
 				console.error(err)
@@ -245,15 +242,55 @@ app.get('/question', passport.authenticate('bearer', { session: false }), functi
 	})
 })
 
-app.post('/question', jsonParser, passport.authenticate('bearer', { session: false }), function(req, res) {
+app.put('/question', jsonParser, passport.authenticate('bearer', { session: false }), function(req, res) {
 	var accessToken = req.headers.authorization.split(' ')[1]
-	console.log('server req body', req.body)
-	User.find({token: accessToken}, {questions: 1}, function(err, data) {
+	User.find({token: accessToken}, function(err, data) {
 		if (err) {
 			console.error(err)
 			return res.status(500).json('Internal Server Error')
 		}
-	
+		let isCorrect = req.body.isCorrect
+		let dataToUpdate = data[0].questions
+		if(dataToUpdate[0]._id == req.body._id) {
+			if(isCorrect) {
+				if(dataToUpdate[0].mValue === 1) {
+					dataToUpdate[0].mValue = 3
+				}
+				else {
+					dataToUpdate[0].mValue = dataToUpdate[0].mValue * 2
+				}
+			}
+		}
+		else {
+			console.error(err)
+			res.status(500).json("Internal Data Error")
+		}
+
+		updatedQuestionOrder = dataToUpdate.slice(1, dataToUpdate[0].mValue + 1)
+		updatedQuestionOrder.push(dataToUpdate[0])
+		updatedQuestionOrder = updatedQuestionOrder.concat(dataToUpdate.slice((dataToUpdate[0].mValue + 1), dataToUpdate.length))
+
+		User.findById(data[0]._id, function(err, updatedData) {
+			if(err) {
+				console.log("err:", err);
+			}
+			updatedData.questions = updatedQuestionOrder
+			// console.log("updatedData", updatedData.questions);
+			updatedData.save(function(err, newData) {
+				if(err) {
+					res.status(500).send(err)
+				}
+				else {
+					Questions.find({_id: newData.questions[0]._id}, function(err, question) {
+						if(err) {
+							console.error(err)
+							res.status(500).json('Question db error')
+						}
+						res.status(200).json(question)
+					})
+				}
+			})
+		})
 	})
 })
 
