@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import * as actions from './actions.js';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,7 @@ class Landing extends Component {
 	handleOnClick() {
 		this.props.loggedIn()
 		console.log(this.props.isLoggedIn)
-		window.location.href='/auth/google/'
+		browserHistory.push('/auth/google/')
 	}
 
 	componentWillMount() {
