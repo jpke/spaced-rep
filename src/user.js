@@ -9,7 +9,7 @@ var userSchema = new mongoose.Schema({
 		required: true
 	},
 	questions: {
-		type: Array,
+		type: mongoose.Schema.Types.Mixed,
 		required: true
 	}
 })

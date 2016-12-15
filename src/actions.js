@@ -51,10 +51,8 @@ export const fetchQuestion = () => {
 				console.error(error)
 				throw error;
 			}
-			console.log('RES:::', res)
 			return res.json()
 		}).then((data) => {
-			console.log('ACTIONS DATA:', data)
 			return dispatch(populateQuestions(data))
 		})
 	}
@@ -66,7 +64,7 @@ export const sendUserInput = (_id, isCorrect) => {
 	return (dispatch) => {
 		const url = 'http://localhost:3090/question'
 		return fetch(url, {
-			method: 'POST',
+			method: 'PUT',
 			body: JSON.stringify({_id, isCorrect}),
 			headers: {'Accept': 'application/json', 'content-type': 'application/json', 
 			'Authorization': `Bearer ${cookie.load('accessToken')}`}
@@ -77,7 +75,9 @@ export const sendUserInput = (_id, isCorrect) => {
 				console.error(error)
 				throw error;
 			}
-			return fetchQuestion()
+			return res.json()
+		}).then((data) => {
+			return dispatch(populateQuestions(data))
 		})
 	}
 }
