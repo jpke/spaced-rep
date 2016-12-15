@@ -38,10 +38,6 @@ passport.use(new Strategy(
 
 app.use(passport.initialize());
 
-app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, './build', 'index.html'));
- });
-
 app.get('/question', passport.authenticate('bearer', { session: false }), function(req, res) {
 	var accessToken = req.headers.authorization.split(' ')[1]
 	User.find({token: accessToken}, {questions: 1}, function(err, data) {
@@ -160,7 +156,9 @@ app.get('/auth/google/callback', function(req, res) {
 	});
 })
 
-
+app.get('/*', function (req, res) {
+   res.sendFile(path.join(__dirname, './build', 'index.html'));
+ });
 
 var databaseURI = process.env.DATABASE_URI || 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
 mongoose.connect(databaseURI).then(function() {
