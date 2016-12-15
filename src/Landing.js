@@ -8,7 +8,10 @@ class Landing extends Component {
 
 	componentWillMount() {
 		this.props.saveCookie()
-		if(cookie.load('accessToken')) this.props.loggedIn()
+		if(cookie.load('accessToken')) {
+			console.log("this ran")
+			this.props.loggedIn()
+		}
 	}
 	
 	render() {
