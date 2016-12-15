@@ -4,12 +4,35 @@ import * as actions from './actions';
 
 export default class CardPage extends Component {
 	
+	constructor(props) {
+		super(props)
+		
+		this.state = {
+			"side": "question"
+		}
+	}
+
+	onClickWord () {
+		if (this.state.side === 'question') {
+			this.setState({'side': 'answer'})
+		} else {
+			this.setState({'side': 'question'})
+		}
+		console.log('STATE SIDE', this.state.side)
+	}
+
+
 	render() {
 
 		return  <div className='word-card'>
-					<p className='light-side'>{this.props.card.question}</p>
-					<p className='dark-side'>{this.props.card.answer}</p>
+					<p className='study-card' onClick={this.onClickWord.bind(this)}>
+						{this.props.card [this.state.side]}
+					</p>
 				</div>
 	
 	}
 }
+
+//initial state question
+//a way of toggling from question to answer
+//renderer acknowleding which on display
