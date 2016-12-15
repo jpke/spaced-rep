@@ -15,7 +15,7 @@ var path = require('path');
 
 var app = express();
 app.use(cors());
-app.use(express.static( '../build'));
+// app.use(express.static( '../build'));
 var jsonParser = bodyParser.json();
 
 passport.serializeUser(function(user, done) {
