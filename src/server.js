@@ -116,7 +116,7 @@ var oauth2Client = new OAuth2(
   '/auth/google/callback'
 );
 
-app.get('/auths/google', function(req, res) {
+app.get('/auth/google', function(req, res) {
 	var url = oauth2Client.generateAuthUrl({
 	  // If you only need one scope you can pass it as string
 	  scope: 'profile'
