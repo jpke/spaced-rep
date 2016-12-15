@@ -303,7 +303,7 @@ app.get('/auth/google/callback', function(req, res) {
 
 
 
-var databaseURI = 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
+var databaseURI = process.env.DATABASE_URI || 'mongodb://ewok:ewok@ds133368.mlab.com:33368/ewokese';
 mongoose.connect(databaseURI).then(function() {
 	//User.remove({});
 	var port = process.env.port || 3090;
