@@ -222,9 +222,9 @@ passport.use(new Strategy(
 
 app.use(passport.initialize());
 
-app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, './build', 'index.html'));
- });
+// app.get('/*', function (req, res) {
+//    res.sendFile(path.join(__dirname, './build', 'index.html'));
+//  });
 
 app.get('/question', passport.authenticate('bearer', { session: false }), function(req, res) {
 	var accessToken = req.headers.authorization.split(' ')[1]
