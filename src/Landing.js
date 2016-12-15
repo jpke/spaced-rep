@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import * as actions from './actions.js';
 import { connect } from 'react-redux';
 

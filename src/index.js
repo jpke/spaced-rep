@@ -7,7 +7,7 @@ import Cards from './Cards.js'
 import './index.css';
 import { Provider } from 'react-redux'
 import store from './configureStore'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import RequireAuth from './requireAuth'
 
 
